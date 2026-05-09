@@ -1,0 +1,89 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main() {
+
+    const int n = 4;
+
+    // adjacency matrix / cost matrix
+    int cost[n][n] = {
+        {0, 4, 1, 3},
+        {4, 0, 2, 1},
+        {1, 2, 0, 5},
+        {3, 1, 5, 0}
+    };
+
+    int start;
+
+    cout << "=== PROGRAM GRAF TUKANG POS ===" << endl;
+    cout << "Masukkan titik awal (1-4) : ";
+    cin >> start;
+
+    start--; // ubah ke index array
+
+    vector<int> path;
+
+    // simpan semua node selain titik awal
+    for (int i = 0; i < n; i++) {
+        if (i != start) {
+            path.push_back(i);
+        }
+    }
+
+    int minimumCost = 99999;
+    vector<int> bestPath;
+
+    // mencari semua kemungkinan jalur
+    do {
+
+        int currentCost = 0;
+        int k = start;
+
+        // hitung total biaya perjalanan
+        for (int i = 0; i < path.size(); i++) {
+            currentCost += cost[k][path[i]];
+            k = path[i];
+        }
+
+        // kembali ke titik awal
+        currentCost += cost[k][start];
+
+        // cek biaya minimum
+        if (currentCost < minimumCost) {
+            minimumCost = currentCost;
+            bestPath = path;
+        }
+
+    } while (next_permutation(path.begin(), path.end()));
+
+    // tampilkan adjacency matrix
+    cout << "\nAdjacency Matrix :" << endl;
+
+    for (int i = 0; i < n; i++) {
+
+        for (int j = 0; j < n; j++) {
+            cout << cost[i][j] << " ";
+        }
+
+        cout << endl;
+    }
+
+    // tampilkan jalur terbaik
+    cout << "\nJalur Terpendek :" << endl;
+
+    cout << start + 1;
+
+    for (int i = 0; i < bestPath.size(); i++) {
+        cout << "--->" << bestPath[i] + 1;
+    }
+
+    cout << "--->" << start + 1;
+
+    // tampilkan biaya minimum
+    cout << "\n\nMinimum Cost : " << minimumCost << endl;
+
+    return 0;
+}
